@@ -1,5 +1,5 @@
-# Gunakan versi PHP yang lebih modern (disarankan 8.1 atau 8.2 untuk Laravel terbaru)
-FROM php:8.2-cli
+# Gunakan PHP 7.4-cli agar kompatibel dengan library lama (dompdf/phpexcel)
+FROM php:7.4-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -15,23 +15,21 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 1. INSTALL COMPOSER (Penting agar folder 'vendor' bisa dibuat)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copy composer dari image official
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# 2. COPY SOURCE CODE
+# Copy source code
 COPY . .
 
-# 3. JALANKAN COMPOSER INSTALL
-# Ini akan membuat folder vendor/autoload.php yang hilang tadi
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Jalankan composer install dengan ignore platform reqs 
+# Ini gunanya untuk memaksa install meskipun ada sedikit ketidakcocokan versi
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache
 
-# Gunakan port yang disediakan Railway secara dinamis
 EXPOSE 8080
 
-# Jalankan server
 CMD php -S 0.0.0.0:8080 -t public

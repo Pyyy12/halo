@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Author;
 use Laratrust\LaratrustFacade as Laratrust;
 use Illuminate\Support\Facades\Auth;
-use App\Author;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -28,7 +28,6 @@ class HomeController extends Controller
     {
         if (Laratrust::hasRole('admin')) return $this->adminDashboard();
         if (Laratrust::hasRole('member')) return $this->memberDashboard();
-
         return view('home');
     }
 
@@ -37,8 +36,8 @@ class HomeController extends Controller
         $authors = [];
         $books = [];
         foreach (Author::all() as $author) {
-            array_push($authors, $author->name);
-            array_push($books, $author->books->count());
+            $authors[] = $author->name;
+            $books[] = $author->books()->count();
         }
 
         return view('dashboard.admin', compact('authors', 'books'));
@@ -49,4 +48,5 @@ class HomeController extends Controller
         $borrowLogs = Auth::user()->borrowLogs()->borrowed()->get();
         return view('dashboard.member', compact('borrowLogs'));
     }
+
 }

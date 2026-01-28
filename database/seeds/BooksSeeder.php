@@ -1,10 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\User;
 use App\Author;
 use App\Book;
-use App\BorrowLog;
 
 class BooksSeeder extends Seeder
 {
@@ -15,23 +13,19 @@ class BooksSeeder extends Seeder
      */
     public function run()
     {
-        // Sample penulis
-        $author1 = Author::create(['name'=>'Mohammad Fauzil Adhim']);
-        $author2 = Author::create(['name'=>'Salim A. Fillah']);
-        $author3 = Author::create(['name'=>'Aam Amiruddin']);
+        //Sample Penulis
+        $author1 = Author::create(['name' => 'Ali']);
+        $author2 = Author::create(['name' => 'Budi']);
+        $author3 = Author::create(['name' => 'Citra']);
 
-        // Sample buku
-        $book1 = Book::create(['title'=>'Kupinang Engkau dengan Hamdalah',
-            'amount'=>3, 'author_id'=>$author1->id]);
-        $book2 = Book::create(['title'=>'Jalan Cinta Para Pejuang',
-            'amount'=>2, 'author_id'=>$author2->id]);
-        $book3 = Book::create(['title'=>'Membingkai Surga dalam Rumah Tangga',
-            'amount'=>4, 'author_id'=>$author3->id]);
-        $book4 = Book::create(['title'=>'Cinta & Seks Rumah Tangga Muslim',
-            'amount'=>3, 'author_id'=>$author3->id]);
+        //Sample Buku
+        $book1 = Book::create(['title'=>'Tutorial Adobe Illustrator','amount'=>3, 'author_id'=>$author1->id]);
+        $book2 = Book::create(['title'=>'Mengenal Laravel','amount'=>4, 'author_id'=>$author2->id]);
+        $book3 = Book::create(['title'=>'Panduan Photoshop CS6','amount'=>2, 'author_id'=>$author3->id]);
+        $book4 = Book::create(['title'=>'Mahir Codeigniter','amount'=>5, 'author_id'=>$author2->id]);
 
-        // Sample peminjaman buku
-        $member = User::where('email', 'radit@gmail.com')->first();
+        //Sample Peminjaman Buku
+        $member = User::where('email', 'member@gmail.com')->first();
         BorrowLog::create(['user_id' => $member->id, 'book_id'=>$book1->id, 'is_returned' => 0]);
         BorrowLog::create(['user_id' => $member->id, 'book_id'=>$book2->id, 'is_returned' => 0]);
         BorrowLog::create(['user_id' => $member->id, 'book_id'=>$book3->id, 'is_returned' => 1]);

@@ -3,19 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Session;
 
 class BorrowLog extends Model
 {
     protected $fillable = ['book_id', 'user_id', 'is_returned'];
 
-    protected $casts = [
-        'is_returned' => 'boolean',
-    ];
-
     public function book()
     {
-        return $this->belongsTo('App\Book');
+    return $this->belongsTo('App\Book');
     }
 
     public function user()
@@ -32,4 +27,8 @@ class BorrowLog extends Model
     {
         return $query->where('is_returned', 0);
     }
+
+    protected $casts = [
+    'is_returned' => 'boolean',
+    ];
 }

@@ -11,4 +11,3 @@ class UpdateMemberRequest extends StoreMemberRequest
         return $rules;
     }
 }
-

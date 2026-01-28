@@ -14,8 +14,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'Illuminate\Auth\Events\Login' => [
-'App\Listeners\LogLastLogin',
-
+        'App\Listeners\LogLastLogin',
         ],
     ];
 

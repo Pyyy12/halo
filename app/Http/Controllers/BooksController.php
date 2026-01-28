@@ -211,6 +211,11 @@ class BooksController extends Controller
         try {
             $book = Book::findOrFail($id);
         Auth::user()->borrow($book);
+        
+        // --- TAMBAHAN LOGIKA KURANGI STOK ---
+        $book->decrement('amount'); 
+        // ------------------------------------
+
         Session::flash("flash_notification", [
             "level"=>"success",
             "message"=>"Berhasil meminjam $book->title"
@@ -240,6 +245,10 @@ class BooksController extends Controller
             $borrowLog->is_returned = true;
             $borrowLog->save();
             
+            // --- TAMBAHAN LOGIKA TAMBAH STOK ---
+            $borrowLog->book->increment('amount');
+            // ------------------------------------
+
             Session::flash("flash_notification", [
                 "level"     => "success",
                 "message"   => "Berhasil mengembalikan " . $borrowLog->book->title
